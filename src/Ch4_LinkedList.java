@@ -16,6 +16,8 @@ public class Ch4_LinkedList {
             current = current.getLink();
         }
     }*/
+
+
     // Q. 3  // done
    /* public static void nodesBetween(Node<Integer> head, int x, int y) {
         Node<Integer> start = listSearch(head, x);
@@ -28,6 +30,7 @@ public class Ch4_LinkedList {
             System.out.print(ptr.getData() + " ");
         System.out.println(ptr.getData());
     }*/
+
 
     //Q. 4 // done
    /* public static <E> Node<E> reverseList(Node<E> head) {
@@ -43,6 +46,7 @@ public class Ch4_LinkedList {
         answer = prev;
         return answer;
     }*/
+
 
     //Q.5 // done
    /* public static Node<Integer> merge(Node<Integer> h1, Node<Integer> h2) {
@@ -83,6 +87,7 @@ public class Ch4_LinkedList {
         return answer;//
     }*/
 
+
     //Q.6  //done
    /* public static Node<Integer>[] listSplitter(Node<Integer> head, int splitterValue) {
         Node<Integer>[] answer = new Node[2];
@@ -107,6 +112,7 @@ public class Ch4_LinkedList {
         return answer;
     }*/
 
+
     //Q. 7  // done
    /* public static Node<Integer> listSort(Node<Integer> head) {
         if (head == null) return null;
@@ -127,6 +133,7 @@ public class Ch4_LinkedList {
         }
         return null;
     }*/
+
 
     //Q.8  // NOT done
     /*  public void subtract(LinkedList<Integer> Y) {

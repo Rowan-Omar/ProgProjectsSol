@@ -17,6 +17,7 @@ public class Ch6_Stack {
         return x;
     }*/
 
+
     // Q.5 // done  but without the enhancement part
     /*class BooleanExpEval {
         static String expression; //the exp entered from the user
@@ -150,6 +151,7 @@ public class Ch6_Stack {
 
     }*/
 
+
     // Q. 6 // done
     /*public static double evaluatePostfix(String exp) {
         Stack<Double> numStack = new Stack<>();
@@ -173,6 +175,7 @@ public class Ch6_Stack {
         }
         return numStack.pop();
     }*/
+
 
     //Q.7 as part  //  done
     /*public static String convInToPostGen(String exp) { //this is for the case when the parenthesis need not to be fully
@@ -214,6 +217,7 @@ public class Ch6_Stack {
         }
         return result;
     }*/
+
 
     //Q. 9  // NOT done
     /*public static double evaluateInfixGen(String exp) { //not full parenthesis
@@ -274,14 +278,13 @@ public class Ch6_Stack {
                         throw new IllegalArgumentException("Illegal character");
                 }
             }
-        }*/
-    /*
-
-        if (numStack.size() != 1) {
+        }*//*
+    if (numStack.size() != 1) {
             throw new IllegalArgumentException("Illegal input expression!");
         }
         return numStack.pop();
     }*/
+
 
     //Q.12 // done
     /*public static <E> void displayTopBottom(LinkedStack<E> s) {
@@ -333,6 +336,7 @@ public class Ch6_Stack {
 
         return compareStacks(s1, s2);
     }*/
+
 
     //Q.15   //done
     /*public void flip() {
