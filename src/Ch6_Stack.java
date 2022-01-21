@@ -6,7 +6,7 @@ public class Ch6_Stack {
         E x;
         if (n < 0 || n > size()) throw new NoSuchElementException();
 
-        ArrayStack<E> temp = new ArrayStack<E>();
+        /*LinkedStack<E> temp = new LinkedStack<E>();
         for (int i = 0; i < n; i++) {
             temp.push((E) pop());
         }
@@ -14,6 +14,22 @@ public class Ch6_Stack {
         while (!temp.isEmpty()) {
             this.push((E) temp.pop());
         }
+        return x;//
+
+        //OR
+        if (n == 0 && !isEmpty()) {
+            x = top.getData();
+            return x;
+        }
+        Node<E> temp = top.getLink();
+        int i = 1;
+        while (temp != null && i < n) {
+            temp = temp.getLink();
+            i++;
+        }
+
+        if (temp != null)
+            x = temp.getData();
         return x;
     }*/
 
@@ -38,58 +54,57 @@ public class Ch6_Stack {
             } while (Objects.equals(expression, "Exit")); //it is not looping
         }
 
-        public static Boolean evaluate(String exp) {
-            Stack<Integer> num = new Stack<>();
-            Stack<Boolean> bool = new Stack<>();
-            Stack<Character> opStack = new Stack<>();
-            exp = exp.replace(">=", "G");
-            exp = exp.replace("<=", "L");
-            exp = exp.replace("==", "E");
-            exp = exp.replace("!=", "N");
-            exp = exp.replace("||", "O");
-            exp = exp.replace("&&", "A");
-            Scanner ex = new Scanner(exp);
-            String next;
-            char c;
-            while (ex.hasNext()) {
-                if (ex.hasNext(UNSIGNED_INT)) {
-                    next = ex.findInLine(UNSIGNED_INT);
-                    System.out.println("the number pushed " + next);
-                    num.push(new Integer(next));
-                } else {
-                    next = ex.findInLine(CHARACTER);
-                    c = next.charAt(0);
-                    System.out.println("The character: " + c);
-                    switch (c) {
-                        case ')':
-                            evaluateStackTops(opStack, num, bool);
-                            break;
-                        case '(':
-                            break;
-                        case '<':
-                        case 'L':
-                        case '>':
-                        case 'G':
-                        case 'E':
-                        case 'N':
-                        case '!':
-                        case 'A':
-                        case 'O':
-                            opStack.push(c);
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Illegal operation");
-                    }
+        public static boolean evaluate(String exp) {
+        Stack<Integer> num = new Stack<>();
+        Stack<Boolean> bool = new Stack<>();
+        Stack<Character> op = new Stack<>();
+        exp = exp.replace(">=", "G");
+        exp = exp.replace("<=", "L");
+        exp = exp.replace("==", "E");
+        exp = exp.replace("!=", "N");
+        exp = exp.replace("||", "O");
+        exp = exp.replace("&&", "A");
+        Scanner ex = new Scanner(exp);
+        String next;
+        char c;
+        while (ex.hasNext()) {
+            if (ex.hasNext(UNSIGNED_INT)) {
+                next = ex.findInLine(UNSIGNED_INT);
+                System.out.println("the number pushed " + next);
+                num.push(new Integer(next));
+            } else {
+                c = ex.findInLine(CHARACTER).charAt(0);
+                System.out.println("The character: " + c);
+                switch (c) {
+                    case ')':
+                        evalBoolStackTops(num, op, bool);
+                        break;
+                    case '(':
+                        break;
+                    case '<':
+                    case 'L':
+                    case '>':
+                    case 'G':
+                    case 'E':
+                    case 'N':
+                    case '!':
+                    case 'A':
+                    case 'O':
+                        op.push(c);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Illegal operation");
                 }
             }
-            if (bool.size() != 1) {
-                throw new IllegalArgumentException("Illegal input expression");
-            }
-            System.out.println("the final result is: " + bool.peek());
-            return bool.pop();
         }
+        if (bool.size() != 1) {
+            throw new IllegalArgumentException("Illegal input expression");
+        }
+        System.out.println("the final result is: " + bool.peek());
+        return bool.pop();
+    }
 
-        private static boolean evalBoolean(int n1, int n2, char op) {
+        private static boolean evalBool(int n1, int n2, char op) {
             System.out.println("the numbers are: " + n1 + " , " + n2);
             switch (op) {
                 case '<':
@@ -109,181 +124,196 @@ public class Ch6_Stack {
             }
         }
 
-        private static void evaluateStackTops(Stack<Character> op, Stack<Integer> n, Stack<Boolean> b) {
-            if (op.size() < 1) throw new IllegalArgumentException();
-            char oper = op.pop();
-            System.out.println("the operation is: " + oper);
-            switch (oper) {
-                case '<':
-                case 'L':
-                case '>':
-                case 'G':
-                case 'E':
-                case 'N': {
-                    if (n.size() < 2) throw new IllegalArgumentException("Illegal expression (num stack underflow)");
-                    int operand2 = n.pop();
-                    int operand1 = n.pop();
-                    b.push(evalBoolean(operand1, operand2, oper));
-                    break;
-                }
-                case '!': {
-                    if (b.size() < 1)
-                        throw new IllegalArgumentException("Illegal expression (Booleans Stack Underflow)");
-                    b.push(!(b.pop()));
-                    break;
-                }
-                case 'A':
-                case 'O': {
-                    if (b.size() < 2)
-                        throw new IllegalArgumentException("Illegal expression (Booleans Stack Underflow)");
-                    boolean b2 = b.pop();
-                    boolean b1 = b.pop();
-                    if (oper == 'A')
-                        b.push((b1 && b2));
-                    else
-                        b.push((b1 || b2));
-                    break;
-                }
-                default:
-                    throw new IllegalArgumentException("Illegal operation (Unknown Character)");
+        private static void evalBoolStackTops(Stack<Integer> n, Stack<Character> op, Stack<Boolean> b) {
+        if (op.size() < 1) throw new IllegalArgumentException();
+        char oper = op.pop();
+        System.out.println("the operation is: " + oper);
+        switch (oper) {
+            case '<':
+            case 'L':
+            case '>':
+            case 'G':
+            case 'E':
+            case 'N': {
+                if (n.size() < 2) throw new IllegalArgumentException("Illegal expression (num stack underflow)");
+                int operand2 = n.pop();
+                int operand1 = n.pop();
+                b.push(evalBool(operand1, operand2, oper));
+                break;
             }
+            case '!': {
+                if (b.size() < 1)
+                    throw new IllegalArgumentException("Illegal expression (Booleans Stack Underflow)");
+                b.push(!(b.pop()));
+                break;
+            }
+            case 'A':
+            case 'O': {
+                if (b.size() < 2)
+                    throw new IllegalArgumentException("Illegal expression (Booleans Stack Underflow)");
+                boolean b2 = b.pop();
+                boolean b1 = b.pop();
+                if (oper == 'A')
+                    b.push((b1 && b2));
+                else
+                    b.push((b1 || b2));
+                break;
+            }
+            default:
+                throw new IllegalArgumentException("Illegal operation (Unknown Character)");
         }
-
-    }*/
+    }
+*/
 
 
     // Q. 6 // done
     /*public static double evaluatePostfix(String exp) {
-        Stack<Double> numStack = new Stack<>();
-        for (int i = 0; i < exp.length(); i++) {
-            char c = exp.charAt(i);
-            if (c == ' ')
-                continue;
-            if (Character.isDigit(c)) {
-                System.out.println(c);
-                numStack.push(new Double(c));
+        Stack<Double> num = new Stack<>();
+        Scanner inp = new Scanner(exp);
+        String next;
+        while (inp.hasNext()) {
+            if (inp.hasNext(UNSIGNED_DOUBLE)) {
+                next = inp.findInLine(UNSIGNED_DOUBLE);
+                num.push(new Double(next));
             } else { //an operator is encountered
-                System.out.println(numStack.peek());
-                double operand2 = numStack.pop();
-                double operand1 = numStack.pop();
-                double result = evalArith(operand1, operand2, c);
-                numStack.push(result);
+                char c = inp.findInLine(CHARACTER).charAt(0);
+                if (num.size() < 2) throw new IllegalArgumentException("Illegal expression");
+                double operand2 = num.pop();
+                double operand1 = num.pop();
+                num.push(evalArith(operand1, operand2, c));
             }
         }
-        if (numStack.size() != 1) {
+        if (num.size() != 1) {
             throw new IllegalArgumentException("Invalid Expression");
         }
-        return numStack.pop();
-    }*/
+        return num.pop();
+    }
+
+    private static double evalArith(double num1, double num2, char op) {
+        switch (op) {
+            case '+':
+                return (num1 + num2);
+            case '-':
+                return (num1 - num2);
+            case '*':
+                return (num1 * num2);
+            case '/':
+                return (num1 / num2);
+            default:
+                throw new IllegalArgumentException("Invalid operation");
+        }
+    }
+
+    */
 
 
-    //Q.7 as part  //  done
+    //Q.7  //  done
     /*public static String convInToPostGen(String exp) { //this is for the case when the parenthesis need not to be fully
-        Stack<Character> opStack = new Stack<Character>();
+        Stack<Character> op = new Stack<>();
         String result = "";
+        Scanner inp = new Scanner(exp);
 
-        if (!isBalanced(exp))
-            return "Not well formed";
-        for (int i = 0; i < exp.length(); i++) {
-            char c = exp.charAt(i);
-            if (c == ' ') continue;
-            if (Character.isLetterOrDigit(c))
-                result += c;
-            else if (c == LEFT_NORMAL)
-                opStack.push(c);
-            else if (c == RIGHT_NORMAL) {
-                while ((!opStack.isEmpty()) && (opStack.peek() != LEFT_NORMAL)) {
-                    result += opStack.pop();
-                }
-                if (!opStack.isEmpty()) {
-                    opStack.pop();
-                }
+        while (inp.hasNext()) {
+            if (inp.hasNext(UNSIGNED_DOUBLE)) {
+                result += inp.findInLine(UNSIGNED_DOUBLE);
             } else {
-                while (!opStack.isEmpty() && (opStack.peek() != LEFT_NORMAL) && prec(c) <= prec(opStack.peek())) {
-                    result += opStack.pop();
+                char c = inp.findInLine(CHARACTER).charAt(0);
+                if (c == '(')
+                    op.push(c);
+                else if (Character.isLetter(c))
+                    result += c;
+                else if (c == '+' || c == '-' || c == '*' || c == '/') {
+                    while (!op.isEmpty() && op.peek() != '(' && prec(c) <= prec(op.peek()))
+                        result += op.pop();
+
+                    op.push(c);
+                } else { // right parenthesis
+                    while (!op.isEmpty() && op.peek() != '(')
+                        result += op.pop();
+
+                    if (op.isEmpty())
+                        throw new IllegalArgumentException("Expression is unbalanced");
+                    op.pop();
                 }
-                opStack.push(c);
             }
-            System.out.println();
-            System.out.print(result + "   ");
         }
 
-        while (!opStack.isEmpty()) {
-            if (opStack.peek() == LEFT_NORMAL) {
-                System.out.println(opStack.peek());
-                return "Invalid Expression";
-            }
-            result += opStack.pop();
+        while (!op.isEmpty()) {
+            if (op.peek() == '(')
+                throw new IllegalArgumentException("Exp. did not have balanced paren");
+
+            result += op.pop();
         }
         return result;
     }*/
 
 
-    //Q. 9  // NOT done
+    //Q. 9  // done //da brdo Q.4
     /*public static double evaluateInfixGen(String exp) { //not full parenthesis
-        Stack<Double> numStack = new Stack<>();
-        Stack<Character> opStack = new Stack<>();
+        Stack<Double> numbers = new Stack<>();
+        Stack<Character> operations = new Stack<>();
         Scanner input = new Scanner(exp);
         String next;
 
-        for(int i=0; i <exp.length(); i++){
-            char c = exp.charAt(i);
-            if(Character.isDigit(c)){
-                int num = 0;     //if the number is not one digit
-                while(Character.isDigit(c)){
-                    num = num*10 + (c-'0');
-                    i++;
-                    if(i<exp.length()){
-                        c=exp.charAt(i);
-                    }else
-                        break;
-                }
-                i--;
-                numStack.push((double)num);
-            }else if(c=='(')
-                opStack.push(c);
-            else if(c==')'){
-                while(!opStack.isEmpty() ){
-                    evaluateStackTops(numStack, opStack);
-                }
-                opStack.pop();
-            }else{
-                while(!opStack.isEmpty()&& opStack.peek()!='(' &&  prec(c)<=prec(opStack.peek())){
-                    evaluateStackTops(numStack, opStack);
-                }
-                opStack.push(c);
-            }
-        }
-        */
-    /*while (input.hasNext()) {
+        while (input.hasNext()) {
             if (input.hasNext(UNSIGNED_DOUBLE)) {
                 next = input.findInLine(UNSIGNED_DOUBLE);
-                numStack.push(new Double(next));
+                numbers.push(new Double(next));
             } else {
-                next = input.next(CHARACTER);
-                char c = next.charAt(0) ;
-                switch (c) {
-                    case '+':
-                    case '-':
-                    case '*':
-                    case '/':
-                        opStack.push(c);
-                        break;
-                    case ')':
-                        evaluateStackTops(numStack, opStack);
-                        break;
-                    case '(':
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Illegal character");
+                next = input.findInLine(CHARACTER);
+                char ch = next.charAt(0);
+                if (ch == '(') {
+                    operations.push(ch);
+                } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+                    while (!operations.isEmpty() && operations.peek() != '(' && prec(ch) <= prec(operations.peek())) {
+                        evaluateStackTops(numbers, operations);
+                    }
+                    operations.push(ch);
+                } else { // it will be right parenthesis
+                    while (!operations.isEmpty() && operations.peek() != '(') {
+                        evaluateStackTops(numbers, operations);
+                    }
+                    if (!operations.isEmpty())
+                        operations.pop();
                 }
             }
-        }*//*
-    if (numStack.size() != 1) {
+        }
+        //da 3lshan b3d 25er r9m bitdaf hwa bi5zno w bs keda mesh hid5ol tany y3ml evaluation
+        if (numbers.size() == 2 && operations.size() == 1)
+            evaluateStackTops(numbers, operations);
+
+        if (numbers.size() != 1) {
             throw new IllegalArgumentException("Illegal input expression!");
         }
-        return numStack.pop();
-    }*/
+        return numbers.pop();
+    }
+
+    private static void evaluateStackTops(Stack<Double> numbers, Stack<Character> operations) {
+        double operand1, operand2;
+        if ((numbers.size() < 2) || operations.isEmpty()) {
+            throw new IllegalArgumentException("Illegal expression");
+        }
+        operand2 = numbers.pop();
+        operand1 = numbers.pop();
+        switch (operations.pop()) {
+            case '+':
+                numbers.push(operand1 + operand2);
+                break;
+            case '-':
+                numbers.push(operand1 - operand2);
+                break;
+            case '*':
+                numbers.push(operand1 * operand2);
+                break;
+            case '/':
+                numbers.push(operand1 / operand2);
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal operation");
+        }
+    }
+
+    */
 
 
     //Q.12 // done
@@ -299,8 +329,28 @@ public class Ch6_Stack {
         Node<E> cursor = s.top;
         for(; cursor != null; cursor = cursor.getLink())
             System.out.print(cursor.getData() + " ");//
-    }*/
+    }
 
+
+
+    //Q. 12 // done
+    public static <E> void displayBottomTop(LinkedStack<E> s) {
+        if (s.isEmpty()) return;
+        E x = s.pop();
+        displayBottomTop(s);
+        System.out.print(x + " ");
+        s.push(x);
+
+        //OR
+        /*LinkedStack<E> temp = new LinkedStack<>();
+        while (!s.isEmpty())
+            temp.push(s.pop());
+
+        while (!temp.isEmpty()) {
+            E t = temp.pop();
+            System.out.print(t + " ");
+            s.push(t);
+        }*/
 
     //Q.13  // done
    /* public static <E> boolean compareStacks(LinkedStack<E> s1, LinkedStack<E> s2) {
