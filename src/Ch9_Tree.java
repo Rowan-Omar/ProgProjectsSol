@@ -1,5 +1,170 @@
 public class Ch9_Tree {
 
+    // done
+    /*public void add(int element) {
+        BTNode<Integer> cursor = root;
+        boolean done = false;
+        BTNode<Integer> newNode = new BTNode<Integer>(element, null, null);
+
+        if (cursor == null) {
+            root = newNode;
+            return;
+        }
+
+        while (!done) {
+            if (element <= cursor.getData()) {
+                if (cursor.getLeft() == null) {
+                    cursor.setLeft(newNode);
+                    done = true;
+                } else
+                    cursor = cursor.getLeft();
+            } else {
+                if (cursor.getRight() == null) {
+                    cursor.setRight(newNode);
+                    done = true;
+                } else
+                    cursor = cursor.getRight();
+            }
+        }
+    }*/
+
+
+    //done
+    /*public void addMany(int... elements) {
+        for (int element : elements)
+            add(element);
+    }*/
+
+    //done
+    /*public void addAll(IntTreeBag addend) {
+        BTNode<Integer> addroot;
+        if (addend == null)
+            return;
+        if (addend.root == root) {
+            addroot = BTNode.treeCopy(addend.root);
+            addTree(addroot);
+        } else
+            addTree(addend.root);
+    }
+
+    private void addTree(BTNode<Integer> addRoot) {
+        if (addRoot != null) {
+            add(addRoot.getData());
+            addTree(addRoot.getLeft());
+            addTree(addRoot.getRight());
+        }
+    }*/
+
+    /*public boolean removeRec(int target) { //done bs el condition mesh zahr sa7
+        BTNode<Integer> targetNode = removeRec(root, target);
+        return (targetNode != null);
+    }
+
+    private BTNode<Integer> removeRec(BTNode<Integer> node, int target) {
+        if (node == null)
+            return null;
+        if (target > node.getData())
+            node.setRight(removeRec(node.getRight(), target));
+        else if (target < node.getData())
+            node.setLeft(removeRec(node.getLeft(), target));
+        else {// if key is same as node's key, then This is the node to be deleted
+            // node with only one child or no child
+            if (node.getLeft() == null) {
+                return node.getRight();
+            } else if (node.getRight() == null)
+                return node.getLeft();
+            else {
+                // node with two children: Get the inorder successor (smallest in the right subtree)
+                node.setData(minValue(node.getRight()));
+                // Delete the inorder successor
+                node.setRight(removeRec(node.getRight(), node.getData()));
+                return node;
+            }
+        }
+        return node;
+    }*/
+
+
+    //done
+    /*public IntTreeBag clone() {
+        IntTreeBag answer;
+        try {
+            answer = (IntTreeBag) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("This class does not implement cloneable");
+        }
+        answer.root = BTNode.treeCopy(root);
+        return answer;
+    }*/
+
+    //done
+    /*public static IntTreeBag union(IntTreeBag b1, IntTreeBag b2) {
+        IntTreeBag answer = new IntTreeBag();
+        if (b1 == null || b2 == null)
+            throw new IllegalArgumentException("One or both the bags is null");
+        answer.addTree(b1.root);
+        answer.addTree(b2.root);
+        answer.root = answer.root.getRight();
+        return answer;
+    }*/
+
+
+    //done
+    /*public int countOccur(int target) {
+        int count = 0;
+        BTNode<Integer> cursor = root;
+        while (cursor != null) {
+            if (target == cursor.getData()) {
+                count++;
+                cursor = cursor.getLeft();
+            } else if (target < cursor.getData())
+                cursor = cursor.getLeft();
+            else
+                cursor = cursor.getRight();
+        }
+        return count;
+    }*/
+
+    //done
+    /*public int size() {
+        return BTNode.treeSize(root);
+    }*/
+
+
+    //No. 18 page 542 //done
+    /*public void sortedDisplay() {
+        if (root == null) {
+            System.out.println("Tree is empty");
+            return;
+        }
+        root.inorderPrint();
+    }*/
+
+
+    // No. 19 page 542  // need to be checked
+   /* public static void join(IntTreeBag top, IntTreeBag left, IntTreeBag right) {
+        if (top == null || left == null || right == null)
+            throw new IllegalArgumentException("one of them is null");
+
+        if (top.root == null)
+            throw new IllegalArgumentException("top is empty");
+
+        if (!top.root.isLeaf())
+            throw new IllegalArgumentException("top has more than one node");
+
+        if(right.root != null && right.root.getData() <= top.root.getData())
+            throw new IllegalArgumentException("elements on right must be larger than that of top");
+
+        if(left.root != null && left.root.getData() > top.root.getData())
+            throw new IllegalArgumentException("elements on left must be smaller than or equal that of top");
+
+        top.root.setLeft(left.root);
+        left.root = null;
+        top.root.setRight(right.root);
+        right.root = null;
+    }*/
+
+
     //Q.1  //done
     /*class ExpTree {
         private BTNode<String> root;
