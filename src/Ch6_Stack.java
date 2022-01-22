@@ -202,9 +202,7 @@ public class Ch6_Stack {
             default:
                 throw new IllegalArgumentException("Invalid operation");
         }
-    }
-
-    */
+    }*/
 
 
     //Q.7  //  done
