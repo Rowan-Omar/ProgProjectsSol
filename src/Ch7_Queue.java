@@ -2,6 +2,66 @@ import java.util.*;
 
 public class Ch7_Queue {
 
+    //Self-test No. 18 page 427
+    /*public void trimToSize() {
+        E[] trimmedArray;
+        int frontNums, rearNums;
+        if (manyItems == data.length)
+            return;
+        else if (manyItems == 0)
+            data = (E[]) new Object[0];
+        else if (front <= rear) {
+            trimmedArray = (E[]) new Object[manyItems];
+            System.arraycopy(data, front, trimmedArray, front, manyItems);
+            data = trimmedArray;
+        } else {
+            trimmedArray = (E[]) new Object[manyItems];
+            frontNums = data.length - front;
+            rearNums = rear + 1;
+            System.arraycopy(data, front, trimmedArray, 0, frontNums);
+            System.arraycopy(data, 0, trimmedArray, frontNums, rearNums);
+            front = 0;
+            rear = manyItems - 1;
+            data = trimmedArray;
+        }
+    }*/
+
+
+    //No. 19  //done
+    /*public LinkedBasedQueue<E> clone() {
+        LinkedBasedQueue<E> answer;
+        Node<E>[] copyInfo;
+        try {
+            answer = (LinkedBasedQueue<E>) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("This class does not implement Cloneable");
+        }
+        copyInfo = (Node<E>[]) Node.listCopyWithTail(front);
+        answer.front = copyInfo[0];
+        answer.rear = copyInfo[1];
+        return answer;
+    }*/
+
+
+    //No. 25 page 433  //NOT done
+    /*public void add(E item, int priority) {
+        if (priority < 0)
+            throw new IllegalArgumentException("Illegal priority");
+
+        if (priority > highestPrio) {
+            highestPrio = priority;
+            //HERE we should handle that we need to enlarge the queue array
+            //queues = (ArrayBasedQueue<E>[]) new Object[highestPrio + 1];
+        }
+
+        if (queues[priority] == null)
+            queues[priority] = new ArrayBasedQueue<>();
+
+        queues[priority].add(item);
+        totalSize++;
+    }*/
+
+
     // Q.1 // done
     /*class WTWPalindrome {
         public static void main(String[] args) {
@@ -12,83 +72,90 @@ public class Ch7_Queue {
                 line = input.nextLine();
                 boolean result = isWTWPalindrome(line);
                 System.out.println(result);
-            } while (line != "exit");
+            } while (line.length() != 0);
         }
 
-        public static boolean isWTWPalindrome(String expression) {
-            Queue<String> q = new LinkedList<String>();
-            Stack<String> s = new Stack<String>();
-            int mismatches = 0;
-            String word = "";
-            for (int i = 0; i < expression.length(); i++) {
-                char c = expression.charAt(i);
-                if (i == (expression.length() - 1)) {
-                    q.add(word.toLowerCase());
-                    s.push(word.toLowerCase());
-                }
-                if (!Character.isWhitespace(c) && !Character.isLetter(c)) continue;
-                if (c == ' ') {
-                    q.add(word.toLowerCase());
-                    s.push(word.toLowerCase());
-                    //System.out.println(word);
-                    word = "";
-                    continue;
-                }
-                word += c;
+        public static boolean isWTWPalindrome(String input) {
+        Queue<String> q = new LinkedList<String>();
+        Stack<String> s = new Stack<String>();
+        int mismatches = 0;
+        String word = "";
+
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+
+            if (Character.isLetter(c))
+                word += Character.toLowerCase(c);
+
+            if (c == ' ' || i == (input.length() - 1)) {
+                q.add(word);
+                s.push(word);
+                //System.out.println(word);
+                word = "";
             }
-            while (!q.isEmpty()) {
-                String item1 = q.remove();
-                String item2 = s.pop();
-                if (!Objects.equals(item1, item2)) {
-                    mismatches++;
-                }
-            }
-            return (mismatches == 0);
         }
-//You can cage a swallow, can’t you, but you can’t swallow a cage, can you?
+
+        while (!q.isEmpty()) {
+            String item1 = q.remove();
+            String item2 = s.pop();
+            if (!Objects.equals(item1, item2)) {
+                mismatches++;
+            }
+        }
+        return (mismatches == 0);
+    }
     }*/
 
 
-    // Q.2
+    //Q.2  //Not done
     /*class LTLPalindrome {
         public static void main(String[] args) {
-            System.out.println("Enter the lines: ");
-            String line;
+            String passage;
             do {
+                System.out.println("Enter the lines (enter 'end' to end passage or 'exit' to quit): ");
                 Scanner input = new Scanner(System.in);
-                line = input.nextLine();
-                boolean result = isLTLPalindrome(line);
+                passage = input.nextLine();
+                boolean result = isLTLPalindrome();
                 System.out.println(result);
-            } while (line != "exit");
+            } while (!passage.equals("exit"));
         }
 
-        public static boolean isLTLPalindrome(String expression) {
+        public static boolean isLTLPalindrome() {
             Queue<String> q = new LinkedList<String>();
             Stack<String> s = new Stack<String>();
+            ArrayList<String> arr = new ArrayList<String>();
             int mismatches = 0;
-            String word = "";
-            //while( ){
-            //char c = expression.charAt(i);
+            int index = 0;
 
-            q.add(word.toLowerCase());
-            s.push(word.toLowerCase());
-            //System.out.println(word);
+            Scanner lines = new Scanner(System.in);
 
-            //}
+            while (lines.hasNextLine()) {
+                String line = lines.nextLine();
+                if (line == null || line.equals("end"))
+                    break;
+
+                arr.add(index++, line);
+            }
+
+            for (String item : arr) {
+                //System.out.println(i + " : " + arr.get(i));
+                String line = item.toLowerCase().replaceAll("\\p{Punct}", "");
+                q.add(line);
+                s.push(line);
+            }
             while (!q.isEmpty()) {
-                String item1 = q.remove();
-                String item2 = s.pop();
-                if (!Objects.equals(item1, item2)) {
+                System.out.println(q.peek() + " --- " + s.peek());
+                if (!Objects.equals(q.remove(), s.pop())) {
                     mismatches++;
+                    //break;
                 }
             }
             return (mismatches == 0);
         }
-//You can cage a swallow, can’t you, but you can’t swallow a cage, can you?
     }*/
 
 
-    //Q . 4 done
+    //Q.4  // Not done
     /*public class PriorityQueue<E> {
         private int highestPrio;
         private ArrayBasedQueue<E>[] queues;
@@ -102,21 +169,25 @@ public class Ch7_Queue {
             if (highestPriority < 0)
                 throw new IllegalArgumentException("The highest priority cannot be negative");
             // el creation hit3mlkeda mesh zi el mrg3
-            queues = (ArrayBasedQueue<E>[]) new ArrayBasedQueue[highestPriority + 1];
+            queues = (ArrayBasedQueue<E>[]) new Object[highestPriority + 1];
             totalSize = 0;
         }
 
+        //No. 25 page 433  //not done
         public void add(E item, int priority) {
-            if (priority > (queues.length - 1) || priority < 0)
+            if (priority < 0)
                 throw new IllegalArgumentException("Illegal priority");
+
+            if (priority > highestPrio) {
+                highestPrio = priority;
+                //HERE we should handle that we need to enlarge the queue array
+                //queues = (ArrayBasedQueue<E>[]) new Object[highestPrio + 1];
+            }
 
             if (queues[priority] == null)
                 queues[priority] = new ArrayBasedQueue<>();
 
             queues[priority].add(item);
-
-            if (priority > highestPrio)
-                highestPrio = priority;
             totalSize++;
         }
 
@@ -160,19 +231,21 @@ public class Ch7_Queue {
                 str = queues[i].displayQueue();
                 System.out.println("queues[" + i + "]: " + str);
             }
+
         }
+
     }*/
 
 
-    //Q. 5  //need to be checked
+    //Q. 5  //may be done
     /*class linkedPriorityQueue {
-        Node front, rear;
+        PrioNode front;
 
-        class Node {
+        class PrioNode {
             int data, priority;
-            Node link;
+            PrioNode link;
 
-            public Node(int d, int p) {
+            public PrioNode(int d, int p) {
                 this.data = d;
                 this.priority = p;
                 link = null;
@@ -180,12 +253,12 @@ public class Ch7_Queue {
         }
 
         public void enqueue(int data, int priority) {
-            Node node = new Node(data, priority);
+            PrioNode node = new PrioNode(data, priority);
             if (front == null || front.priority > node.priority) {
                 node.link = front;
-                front = rear = node;
+                front = node;
             } else {
-                Node temp = front;
+                PrioNode temp = front;
                 while (temp.link != null && temp.link.priority <= node.priority) {
                     temp = temp.link;
                 }
@@ -194,19 +267,31 @@ public class Ch7_Queue {
             }
         }
 
-        public void dequeue() {
-            if (front == null) return;
+        public int dequeue() {
+            if (isEmpty()) return -1;
+            int removed = front.data;
             front = front.link;
+            return removed;
+        }
+
+        public int peek() {
+            if (!isEmpty())
+                return front.data;
+            return -1;
+        }
+
+        public boolean isEmpty() {
+            return (front == null);
         }
     }*/
 
 
-    //Q. 6 // need to be checked
-    /*class CircularQueue<E> {
+    //Q.6 // need to be checked
+    /*class CircularLinkedQueue<E> {
         Node<E> rear;
         int manyNodes;
 
-        public CircularQueue() {
+        public CircularLinkedQueue() {
             rear = null;
             manyNodes = 0;
         }
@@ -254,22 +339,47 @@ public class Ch7_Queue {
             return answer;
         }
 
-    *//*public LinkedBasedQueue<E> clone() { // check self no. 19
-        LinkedBasedQueue<E> answer;
-        try {
-            answer = (LinkedBasedQueue<E>) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException("This class does not implement Cloneable");
-        }
-        answer.front = Node.listCopy(front);
-        return answer;
-    }*//*
-
     }*/
 
 
     //Q. 7 //double-ended queue .. adding and removing from both ends
-    /*public class Deque<E> {
+    /*
+     class DLLNode<E> {
+        private E data;
+        private DLLNode<E> prev, next;
+
+        public DLLNode(E data, DLLNode<E> previous, DLLNode<E> next) {
+            this.data = data;
+            this.prev = previous;
+            this.next = next;
+        }
+
+        public E getData() {
+            return data;
+        }
+
+        public DLLNode<E> getPrev() {
+            return prev;
+        }
+
+        public DLLNode<E> getNext() {
+            return next;
+        }
+
+        public void setData(E newData) {
+            data = newData;
+        }
+
+        public void setPrev(DLLNode<E> previous) {
+            prev = previous;
+        }
+
+        public void setNext(DLLNode<E> next) {
+            this.next = next;
+        }
+    }
+
+    public class Deque<E> {
         DLLNode<E> front, rear;
         int manyNodes;
 
@@ -351,59 +461,18 @@ public class Ch7_Queue {
             }
             System.out.println();
         }
-
-    *//*public void clear() {
-        while (removeFirst() != null) {
-            removeFirst();
-        }
-    }*//*
-    }
-
-    class DLLNode<E> {
-        private E data;
-        private DLLNode<E> prev, next;
-
-        public DLLNode(E data, DLLNode<E> previous, DLLNode<E> next) {
-            this.data = data;
-            this.prev = previous;
-            this.next = next;
-        }
-
-        public E getData() {
-            return data;
-        }
-
-        public DLLNode<E> getPrev() {
-            return prev;
-        }
-
-        public DLLNode<E> getNext() {
-            return next;
-        }
-
-        public void setData(E newData) {
-            data = newData;
-        }
-
-        public void setPrev(DLLNode<E> previous) {
-            prev = previous;
-        }
-
-        public void setNext(DLLNode<E> next) {
-            this.next = next;
-        }
     }*/
 
 
-    //Q. 13
-    /*class ArrayDeque<E> {
-        E[] data;
+    //Q. 13 //not done
+    /*class CircularArrayDeque<E> {
+        Object[] data;
         int front, rear;
         int manyItems;
 
-        public ArrayDeque(int initCapacity) {
+        public CircularArrayDeque(int initCapacity) {
             if(initCapacity < 0) throw new IllegalArgumentException();
-            data =  (E[]) new Object[initCapacity];
+            data =  new Object[initCapacity];
             front = rear = -1;
             manyItems = 0;
         }
