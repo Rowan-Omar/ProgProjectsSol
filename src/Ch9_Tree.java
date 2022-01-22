@@ -165,53 +165,37 @@ public class Ch9_Tree {
     }*/
 
 
-    //Q.1  //done
+    //Q.1  // NOT done
     /*class ExpTree {
         private BTNode<String> root;
 
-        public ExpTree(Object obj) {
-            root = new BTNode<String>(obj.toString(), null, null);
+        public ExpTree() {
         }
 
         public void add(Object obj) {
-            BTNode newNode;
-            try {
-                int val = Integer.parseInt(obj.toString());
-                recAdd(val, root);
-            } catch (Exception e) {
-                newNode = new BTNode<String>((String) obj, null, null);
-                add(newNode, root);
-            }
+            recAdd(obj.toString(), root);
         }
 
-        private void add(BTNode tn, BTNode<String> localRoot) {
-            // if (localRoot == null)
-            //   localRoot = (BTNode<String>) tn;
-            // else {
-            if (localRoot.getLeft() == null)
-                localRoot.setLeft(tn);
-            else if (localRoot.getRight() == null)
-                localRoot.setRight(tn);
-            // }
-        }
-
-        private BTNode recAdd(int element, BTNode<String> start) {
-            if (start == null)
-                start = new BTNode(element, null, null);
-            else if (start.getRight() == null)
+        private BTNode<String> recAdd(String element, BTNode<String> start) {
+            if (start == null) {
+                start = new BTNode<String>(element, null, null);
+                if (root == null)
+                    root = start;
+            } else if (start.getRight() == null)
                 start.setRight(recAdd(element, start.getRight()));
             else
                 start.setLeft(recAdd(element, start.getLeft()));
             return start;
         }
 
-        private double evaluate(Object localRoot) {
-            try {
-                return (double) ((BTNode<Integer>) (localRoot)).getData();
-            } catch (Exception e) {
-                String rootStr = ((BTNode<String>) localRoot).getData();
-                Object left = ((BTNode<String>) localRoot).getLeft();
-                Object right = ((BTNode<String>) localRoot).getRight();
+        private double evaluate(BTNode<String> localRoot) {
+            try { //it is a number
+                return new Double(localRoot.getData());
+                //(double) ((BTNode<Integer>) (localRoot)).getData();
+            } catch (Exception e) { // it is an operator
+                String rootStr = localRoot.getData();
+                BTNode<String> left = localRoot.getLeft();
+                BTNode<String> right = localRoot.getRight();
 
                 switch (rootStr) {
                     case "*":
@@ -228,24 +212,20 @@ public class Ch9_Tree {
             }
         }
 
-        public double evaluate() {
-            return evaluate(root);
-        }
-
         public void display() {
-            root.print(0);
+            //root.print(0);
+            root.inorderPrint();
         }
     }*/
 
 
     //Q.2
     /*class CompleteTree<E> {
-        E[] data;
+        Object[] data;
         int manyItems;
-        private boolean[] isPresent;
 
         public CompleteTree() {
-            data = (E[]) new Object[10];
+            data = new Object[10];
         }
 
         public void display() {
@@ -267,18 +247,18 @@ public class Ch9_Tree {
         }
 
         public void ensureCapacity(int minCap) {
-            E[] biggerArray;
+            Object[] biggerArray;
             if (minCap < data.length) {
                 return;
             }
-            biggerArray = (E[]) new Object[minCap];
+            biggerArray = new Object[minCap];
             System.arraycopy(data, 0, biggerArray, 0, data.length);
             data = biggerArray;
         }
     }*/
 
 
-    // Q.2 and 3 // done
+    // Q.3 // done
     /*public class ArrayTree {
         private int[] data;
         private int currentIndex;
@@ -346,8 +326,6 @@ public class Ch9_Tree {
             currentIndex--;
             return true;
         }
-
-
 }*/
 
 
@@ -408,6 +386,5 @@ public class Ch9_Tree {
         }
         return t;
     }*/
-
 
 }
