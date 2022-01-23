@@ -301,9 +301,9 @@ public class Ch7_Queue {
             if (isEmpty()) {
                 rear = node;
                 node.setLink(node); //da el 3ml el circular
-            } else if(manyNodes == 1){
+            } else {
                 rear.addNodeAfter(obj);
-                rear = node;
+                rear = rear.getLink();
             }
             manyNodes++;
         }
